@@ -1,0 +1,4 @@
+name: EtherHardcore
+main: com.warrows.plugins.EtherHardcore.EtherHardcore
+version: 0.1
+depend: [Vault]

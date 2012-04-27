@@ -31,6 +31,7 @@ public class EtherHardcore extends JavaPlugin
 		
 		//Enregistrement des listeners
 		getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+		getServer().getPluginManager().registerEvents(new EndermanDeathListener(), this);
 		log.info("EtherHard: listener activé");
 
 		log.info("EtherHard activé");

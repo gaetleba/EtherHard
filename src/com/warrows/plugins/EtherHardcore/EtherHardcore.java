@@ -1,12 +1,9 @@
 package com.warrows.plugins.EtherHardcore;
 
-import java.io.*;
-import java.util.*;
+import java.util.logging.Logger;
+
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Server;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
+
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -17,12 +14,25 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class EtherHardcore extends JavaPlugin
 {
-	@Override
-	public void onDisable()
-	{
-	}
+	protected static Economy	economy;
+	private Logger				log;
+
 	@Override
 	public void onEnable()
 	{
+		RegisteredServiceProvider<Economy> economyProvider = getServer()
+				.getServicesManager().getRegistration(
+						net.milkbowl.vault.economy.Economy.class);
+		if (economyProvider != null)
+			economy = economyProvider.getProvider();
+
+		log = this.getLogger();
+		log.info("EtherHard activé");
+	}
+
+	@Override
+	public void onDisable()
+	{
+		log.info("EtherHard desactivé");
 	}
 }

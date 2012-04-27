@@ -1,9 +1,7 @@
 package com.warrows.plugins.EtherHardcore;
 
 import java.util.logging.Logger;
-
 import net.milkbowl.vault.economy.Economy;
-
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,18 +13,26 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class EtherHardcore extends JavaPlugin
 {
 	protected static Economy	economy;
-	private Logger				log;
+	protected static Logger		log;
 
 	@Override
 	public void onEnable()
 	{
+		log = this.getLogger();	
+		log.info("EtherHard loading");
+		
+		//Enregistrement du service economique
 		RegisteredServiceProvider<Economy> economyProvider = getServer()
 				.getServicesManager().getRegistration(
 						net.milkbowl.vault.economy.Economy.class);
 		if (economyProvider != null)
 			economy = economyProvider.getProvider();
+		log.info("EtherHard: economie liée");
+		
+		//Enregistrement des listeners
+		getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+		log.info("EtherHard: listener activé");
 
-		log = this.getLogger();
 		log.info("EtherHard activé");
 	}
 

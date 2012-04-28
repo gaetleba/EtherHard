@@ -14,7 +14,7 @@ public class EtherHardcore extends JavaPlugin
 {
 	protected static Economy	economy;
 	protected static Logger		log;
-
+	
 	@Override
 	public void onEnable()
 	{
@@ -32,6 +32,7 @@ public class EtherHardcore extends JavaPlugin
 		//Enregistrement des listeners
 		getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
 		getServer().getPluginManager().registerEvents(new EndermanDeathListener(), this);
+		getServer().getPluginManager().registerEvents(new Antilogin(), this);
 		log.info("EtherHard: listener activé");
 
 		log.info("EtherHard activé");

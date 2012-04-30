@@ -16,16 +16,18 @@ public class Antilogin implements Listener
 	public void onPlayerLoginEvent(PlayerLoginEvent event)
 	{
 		Player joueur = event.getPlayer();
+		
+		if (!EtherHardcore.economy.hasAccount(joueur.getName()))
+			return;
+
 		/**
 		 * Si le joueur n'a plus de point, on ne le connecte pas.
 		 */
-		if (EtherHardcore.economy.hasAccount(joueur.getName()))
-			return;
-
 		if ((int) EtherHardcore.economy.getBalance(joueur.getName()) < 1)
 		{
 			event.setResult(Result.KICK_OTHER);
 			event.setKickMessage("Vous n'avez plus de Horbrun. Demandez à un ami de vous en préter pour revenir.");
+			return;
 		}
 
 		/**
@@ -46,6 +48,10 @@ public class Antilogin implements Listener
 			event.setResult(Result.KICK_OTHER);
 			event.setKickMessage("Votre corps se régénere. Attendez encore "
 					+ (3600000 - time) / 60000 + " minute(s).");
+		}
+		else
+		{
+			joueursMorts.remove(event.getPlayer());
 		}
 	}
 

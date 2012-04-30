@@ -27,20 +27,19 @@ public class EtherHardcore extends JavaPlugin
 						net.milkbowl.vault.economy.Economy.class);
 		if (economyProvider != null)
 			economy = economyProvider.getProvider();
-		log.info("EtherHard: economie liée");
+		log.info("EtherHard: economy found");
 		
 		//Enregistrement des listeners
 		getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
 		getServer().getPluginManager().registerEvents(new EndermanDeathListener(), this);
 		getServer().getPluginManager().registerEvents(new Antilogin(), this);
-		log.info("EtherHard: listener activé");
 
-		log.info("EtherHard activé");
+		log.info("EtherHard enabled");
 	}
 
 	@Override
 	public void onDisable()
 	{
-		log.info("EtherHard desactivé");
+		log.info("EtherHard disabled");
 	}
 }

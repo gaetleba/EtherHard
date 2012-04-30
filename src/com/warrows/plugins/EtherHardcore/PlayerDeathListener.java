@@ -5,6 +5,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class PlayerDeathListener implements Listener
 {
@@ -45,12 +46,24 @@ public class PlayerDeathListener implements Listener
 		/**
 		 * en cas de kill à niveaux équivalents, -1/+1
 		 */
-		if (hurbsMort > (hurbsTueur+10) && hurbsMort > (hurbsTueur-10))
+		if (hurbsMort < (hurbsTueur+10) && hurbsMort > (hurbsTueur-10))
 		{
 			tuerJoueur(mort,"Un etheranien vous a tué, un de vos Hurbron l'a rejoint.",1.0);
 
-			EtherHardcore.economy.withdrawPlayer(mort.getName(), 1.0);
-			mort.sendMessage("Un Hurbron a quitté votre victime pour s'insérer en vous.");
+			EtherHardcore.economy.depositPlayer(tueur.getName(), 1.0);
+			tueur.sendMessage("Un Hurbron a quitté votre victime pour s'insérer en vous.");
+			return;
+		}
+		
+		/**
+		 * si le mort est plus faible que le tueur.
+		 */
+		if (hurbsMort < (hurbsTueur-10))
+		{
+			tuerJoueur(mort,"Un etheranien vous a tué, un de vos Hurbron l'a rejoint.",1.0);
+			
+			EtherHardcore.economy.depositPlayer(tueur.getName(), 1.0);
+			tueur.sendMessage("Vous avez tué un faible, un Hurbron vous a quitté.");
 			return;
 		}
 	}
@@ -60,7 +73,12 @@ public class PlayerDeathListener implements Listener
 		EtherHardcore.economy.withdrawPlayer(mort.getName(), penalty);
 		Antilogin.addDeadPlayer(mort);
 		mort.getInventory().clear();
-		mort.saveData();
+		ItemStack[] noArmor = new ItemStack[4];
+		noArmor[0]= new ItemStack(0);
+		noArmor[1]= new ItemStack(0);
+		noArmor[2]= new ItemStack(0);
+		noArmor[3]= new ItemStack(0);
+		mort.getInventory().setArmorContents(noArmor);
 		mort.kickPlayer(msg);
 	}
 }

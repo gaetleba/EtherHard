@@ -13,8 +13,13 @@ public class EndermanDeathListener implements Listener
 	{
 		if (! (event.getEntity() instanceof Enderman))
 			return;
+		if (event.getEntity().getKiller() == null)
+				return;
 		
 		Player joueur = ((Enderman) event.getEntity()).getKiller();
+		
+		if (! (joueur instanceof Player))
+			return;
 		
 		EtherHardcore.economy.depositPlayer(joueur.getName(), 1.0);
 		joueur.sendMessage("Vous avez tué cette étrange créature et un Hurbron est entré en vous.");

@@ -43,11 +43,11 @@ public class Antilogin implements Listener
 		/**
 		 * Si le joueur est mort moins d'une heure avant, il doit attendre
 		 */
-		if (time < 3600000)
+		if (time < 1200000)
 		{
 			event.setResult(Result.KICK_OTHER);
 			event.setKickMessage("Votre corps se régénere. Attendez encore "
-					+ (3600000 - time) / 60000 + " minute(s).");
+					+ (1200000 - time) / 60000 + " minute(s).");
 		}
 		else
 		{

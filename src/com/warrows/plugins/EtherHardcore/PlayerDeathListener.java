@@ -35,49 +35,62 @@ public class PlayerDeathListener implements Listener
 		 */
 		if (tueur == null)
 		{
-			tuerJoueur(mort,"Vous êtes mort comme un faible, un Hurbron vous a quitté.",1.0);
+			killPlayer(
+					mort,
+					"Vous êtes mort comme un faible, un Hurbron vous a quitté.",
+					1.0);
 			return;
 		}
 
-		int hurbsTueur = (int) EtherHardcore.economy
-				.getBalance(tueur.getName());
-		int hurbsMort = (int) EtherHardcore.economy.getBalance(mort.getName());
-		
+		/**
+		 * Cet int représente le différentiel de hurbron entre l'assassin et sa
+		 * victime. Si il est positif, l'assassin est plus fort. Si il est
+		 * négatif, la proie est plus forte.
+		 */
+		int diff = (int) EtherHardcore.economy.getBalance(tueur.getName())
+				- (int) EtherHardcore.economy.getBalance(mort.getName());
+
 		/**
 		 * en cas de kill à niveaux équivalents, -1/+1
 		 */
-		if (hurbsMort < (hurbsTueur+10) && hurbsMort > (hurbsTueur-10))
+		if (diff < -10)
 		{
-			tuerJoueur(mort,"Un etheranien vous a tué, un de vos Hurbron l'a rejoint.",1.0);
-
+			killPlayer(mort, "Vous avez été tué. Un Hurbron vous a quitté.",
+					1.0);
 			EtherHardcore.economy.depositPlayer(tueur.getName(), 1.0);
-			tueur.sendMessage("Un Hurbron a quitté votre victime pour s'insérer en vous.");
-			return;
-		}
-		
-		/**
-		 * si le mort est plus faible que le tueur.
-		 */
-		if (hurbsMort < (hurbsTueur-10))
+			tueur.sendMessage("Vous avez vaincu votre adversaire. Un de ses hurbrons vous à rejoint.");
+			// TODO algo de récup équilibré
+		} else if (diff < 5)
 		{
-			tuerJoueur(mort,"Un etheranien vous a tué, un de vos Hurbron l'a rejoint.",1.0);
-			
+			killPlayer(mort, "Vous avez été tué. Un Hurbron vous a quitté.",
+					1.0);
 			EtherHardcore.economy.depositPlayer(tueur.getName(), 1.0);
-			tueur.sendMessage("Vous avez tué un faible, un Hurbron vous a quitté.");
-			return;
+			tueur.sendMessage("Vous avez vaincu votre adversaire. Un de ses hurbrons vous à rejoint.");
+		} else if (diff < 10)
+		{
+			killPlayer(
+					mort,
+					"Vous avez été tué par plus fort que vous, un Hurbron vous a quitté.",
+					1.0);
+			tueur.sendMessage("Vous avez vaincu plus faible que vous. Pour rien.");
+		} else
+		{
+			killPlayer(tueur,
+					"Vous avez tué un faible, un Hurbron vous a quitté.", 1.0);
+			mort.sendMessage("Votre tueur était un lache. Un de ses hurbrons l'a quitté pour sauver votre vie.");
 		}
 	}
-	
-	private void tuerJoueur(Player mort, String msg, double penalty)
+
+	private void killPlayer(Player mort, String msg, double penalty)
 	{
 		EtherHardcore.economy.withdrawPlayer(mort.getName(), penalty);
 		Antilogin.addDeadPlayer(mort);
 		mort.getInventory().clear();
 		ItemStack[] noArmor = new ItemStack[4];
-		noArmor[0]= new ItemStack(0);
-		noArmor[1]= new ItemStack(0);
-		noArmor[2]= new ItemStack(0);
-		noArmor[3]= new ItemStack(0);
+		noArmor[0] = new ItemStack(0);
+		noArmor[1] = new ItemStack(0);
+		noArmor[2] = new ItemStack(0);
+		noArmor[3] = new ItemStack(0);
 		mort.getInventory().setArmorContents(noArmor);
 		mort.kickPlayer(msg);
 	}

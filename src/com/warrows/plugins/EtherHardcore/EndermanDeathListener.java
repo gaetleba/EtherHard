@@ -1,10 +1,10 @@
 package com.warrows.plugins.EtherHardcore;
 
 import org.bukkit.entity.Enderman;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class EndermanDeathListener implements Listener
 {
@@ -13,7 +13,15 @@ public class EndermanDeathListener implements Listener
 	{
 		if (! (event.getEntity() instanceof Enderman))
 			return;
-	
-		event.getDrops().add(new ItemStack(19,1));
+		if (event.getEntity().getKiller() == null)
+				return;
+		
+		Player joueur = ((Enderman) event.getEntity()).getKiller();
+		
+		if (! (joueur instanceof Player))
+			return;
+		
+		EtherHardcore.economy.depositPlayer(joueur.getName(), 1.0);
+		joueur.sendMessage("Vous avez tué cette étrange créature et un Hurbron est entré en vous.");
 	}
 }

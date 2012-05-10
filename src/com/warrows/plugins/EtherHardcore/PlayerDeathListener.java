@@ -14,7 +14,7 @@ public class PlayerDeathListener implements Listener
 		Player mort = event.getEntity();
 		int drop = 1;
 		
-		if ((mort.getLastDamageCause() instanceof Player))
+		if ((mort.getLastDamageCause().getEntity() instanceof Player))
 		{
 			int money = (int) EtherHardcore.economy.getBalance(mort.getName());
 			if (money>=10)
@@ -30,7 +30,7 @@ public class PlayerDeathListener implements Listener
 		noArmor[2] = new ItemStack(0);
 		noArmor[3] = new ItemStack(0);
 		mort.getInventory().setArmorContents(noArmor);
-		event.getDrops().add(new ItemStack(19, 1));
+		event.getDrops().add(new ItemStack(19, drop));
 		mort.kickPlayer("Vous êtes mort");
 	}
 }

@@ -47,7 +47,7 @@ public class Antilogin implements Listener
 		{
 			event.setResult(Result.KICK_OTHER);
 			event.setKickMessage("Votre corps se régénere. Attendez encore "
-					+ (1200000 - time) / 60000 + " minute(s).");
+					+ (1200000 - time) / 60000 + 1 +" minute(s).");
 		}
 		else
 		{
